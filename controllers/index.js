@@ -1,10 +1,17 @@
 const { calculateRiskProfile } = require("../services/calculateRiskProfile");
+const { validator } = require("../middlewares/validator");
 
 const createRiskProfile = (req, res, next) => {
   try {
-    const riskProfile = calculateRiskProfile(req.body);
+    const message = validator(req.body);
 
-    res.status(200).send(riskProfile);
+    if (message === "validated") {
+      const riskProfile = calculateRiskProfile(req.body);
+
+      res.status(200).send(riskProfile);
+    } else {
+      res.status(400).send({ message });
+    }
   } catch (error) {
     next(error);
   }
