@@ -1,14 +1,15 @@
-const calculateRiskProfile = (req, res, next) => {
+const { calculateRiskProfile } = require("../services/calculateRiskProfile");
+
+const createRiskProfile = (req, res, next) => {
   try {
-    const { age, dependents, income, marital_status } = req.body;
-    return res.send(
-      `The user, ${age}, is ${marital_status}. He/she has ${dependents} dependents and makes ${income} annually.`
-    );
+    const riskProfile = calculateRiskProfile(req.body);
+
+    res.status(200).send(riskProfile);
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  calculateRiskProfile,
+  createRiskProfile,
 };
